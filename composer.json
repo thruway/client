@@ -1,0 +1,36 @@
+{
+    "name": "thruway/client",
+    "description": "Thruway WAMP client",
+    "license": "MIT",
+    "keywords": [
+        "WebSockets",
+        "Client",
+        "WAMP",
+        "WAMP2",
+        "Autobahn"
+    ],
+    "authors": [
+        {
+            "name": "Matt Bonneau", "email": "matt@bonneau.net", "role": "Developer"
+        },
+
+        {
+            "name": "David Dan", "email": "davidwdan@gmail.com", "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Thruway\\": "src/"
+        }
+    },
+    "require": {
+        "voryx/thruway-common": "^1.0",
+        "react/event-loop": "^0.4.3",
+        "evenement/evenement": "^2.0",
+        "psr/log": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5.4",
+        "thruway/pawl-transport": "dev-master"
+    }
+}
