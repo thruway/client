@@ -124,14 +124,16 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     private $attemptRetry = true;
 
-
     /**
      * Constructor
      *
      * @param string $realm
      * @param \React\EventLoop\LoopInterface $loop
+     * @param string $authId
+     * @param string[] $authMethods
+     * @param ClientAuthenticationInterface[] $clientAuthenticators
      */
-    public function __construct($realm, LoopInterface $loop = null)
+    public function __construct($realm, LoopInterface $loop = null, $authId = 'anonymous', $authMethods = [], $clientAuthenticators = [])
     {
         Utils::checkPrecision();
 
@@ -139,10 +141,10 @@ class Client implements EventEmitterInterface, ClientInterface
         $this->loop                 = $loop ? $loop : Factory::create();
         $this->transportProvider    = null;
         $this->roles                = [];
-        $this->authMethods          = [];
+        $this->authMethods          = $authMethods;
         $this->session              = null;
-        $this->clientAuthenticators = [];
-        $this->authId               = "anonymous";
+        $this->clientAuthenticators = $clientAuthenticators;
+        $this->authId               = $authId;
 
         $this->reconnectOptions = [
           "max_retries"         => 15,
@@ -157,15 +159,6 @@ class Client implements EventEmitterInterface, ClientInterface
         Logger::info($this, "New client created");
 
     }
-
-    /**
-     * @return string
-     */
-    function __toString()
-    {
-        return get_class($this);
-    }
-
 
     /**
      * This is meant to be overridden so that the client can do its
@@ -201,18 +194,6 @@ class Client implements EventEmitterInterface, ClientInterface
     public function setReconnectOptions($reconnectOptions)
     {
         $this->reconnectOptions = array_merge($this->reconnectOptions, $reconnectOptions);
-    }
-
-    /**
-     * Add client authenticator
-     *
-     * @param \Thruway\Authentication\ClientAuthenticationInterface $ca
-     */
-    public function addClientAuthenticator(ClientAuthenticationInterface $ca)
-    {
-        array_push($this->clientAuthenticators, $ca);
-        $this->authMethods = array_merge($this->authMethods, $ca->getAuthMethods());
-
     }
 
     /**
@@ -260,10 +241,17 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     public function startSession(ClientSession $session)
     {
-        $this->addRole(new Callee())
-          ->addRole(new Caller())
-          ->addRole(new Publisher())
-          ->addRole(new Subscriber());
+        $this->publisher = new Publisher();
+        $this->subscriber = new Subscriber();
+        $this->callee = new Callee();
+        $this->caller = new Caller();
+
+        $this->roles = [
+            $this->publisher,
+            $this->subscriber,
+            $this->callee,
+            $this->caller
+        ];
 
         $details = (object) [
           "roles" => $this->getRoleInfoObject()
@@ -288,30 +276,6 @@ class Client implements EventEmitterInterface, ClientInterface
           "caller"     => (object) ["features" => $this->getCaller()->getFeatures()],
           "callee"     => (object) ["features" => $this->getCallee()->getFeatures()]
         ];
-    }
-
-    /**
-     * Add role
-     *
-     * @param \Thruway\Role\AbstractRole $role
-     * @return \Thruway\Peer\Client
-     */
-    public function addRole(AbstractRole $role)
-    {
-
-        if ($role instanceof Publisher):
-            $this->publisher = $role;
-        elseif ($role instanceof Subscriber):
-            $this->subscriber = $role;
-        elseif ($role instanceof Callee):
-            $this->callee = $role;
-        elseif ($role instanceof Caller):
-            $this->caller = $role;
-        endif;
-
-        array_push($this->roles, $role);
-
-        return $this;
     }
 
     /**
@@ -548,16 +512,6 @@ class Client implements EventEmitterInterface, ClientInterface
     }
 
     /**
-     * Get list roles
-     *
-     * @return array
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
      * Get loop
      *
      * @return \React\EventLoop\LoopInterface
@@ -565,16 +519,6 @@ class Client implements EventEmitterInterface, ClientInterface
     public function getLoop()
     {
         return $this->loop;
-    }
-
-    /**
-     * Set authenticate ID
-     *
-     * @param string $authId
-     */
-    public function setAuthId($authId)
-    {
-        $this->authId = $authId;
     }
 
     /**
@@ -598,16 +542,6 @@ class Client implements EventEmitterInterface, ClientInterface
     }
 
     /**
-     * Set list authenticate methods
-     *
-     * @param array $authMethods
-     */
-    public function setAuthMethods($authMethods)
-    {
-        $this->authMethods = $authMethods;
-    }
-
-    /**
      * Get client session
      *
      * @return \Thruway\ClientSession
@@ -624,13 +558,4 @@ class Client implements EventEmitterInterface, ClientInterface
     {
         return $this->realm;
     }
-
-    /**
-     * @param LoopInterface $loop
-     */
-    public function setLoop(LoopInterface $loop)
-    {
-        $this->loop = $loop;
-    }
 }
-
