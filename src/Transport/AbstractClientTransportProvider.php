@@ -6,7 +6,7 @@ namespace Thruway\Transport;
 
 abstract class AbstractClientTransportProvider implements ClientTransportProviderInterface {
     /**
-     * @var \Thruway\Peer\ClientInterface
+     * @var \Thruway\Peer\Client
      */
     protected $client;
 

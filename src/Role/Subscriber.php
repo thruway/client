@@ -2,10 +2,8 @@
 
 namespace Thruway\Role;
 
-
 use React\Promise\Deferred;
 use React\Promise\Promise;
-use Thruway\AbstractSession;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
 use Thruway\Logging\Logger;
@@ -54,11 +52,11 @@ class Subscriber extends AbstractRole
     /**
      * Handle on recieved message
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\Message $msg
      * @return void
      */
-    public function onMessage(AbstractSession $session, Message $msg)
+    public function onMessage(ClientSession $session, Message $msg)
     {
         if ($msg instanceof SubscribedMessage):
             $this->processSubscribed($session, $msg);
@@ -76,10 +74,10 @@ class Subscriber extends AbstractRole
     /**
      * Process error
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\ErrorMessage $msg
      */
-    protected function processError(AbstractSession $session, ErrorMessage $msg)
+    protected function processError(ClientSession $session, ErrorMessage $msg)
     {
         switch ($msg->getErrorMsgCode()) {
             case Message::MSG_SUBSCRIBE:
@@ -96,10 +94,10 @@ class Subscriber extends AbstractRole
     /**
      * Process subscribe error
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\ErrorMessage $msg
      */
-    protected function processSubscribeError(AbstractSession $session, ErrorMessage $msg)
+    protected function processSubscribeError(ClientSession $session, ErrorMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
             if ($subscription["request_id"] === $msg->getErrorRequestId()) {

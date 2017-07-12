@@ -3,15 +3,15 @@
 namespace Thruway\Transport;
 
 use React\EventLoop\LoopInterface;
-use Thruway\Peer\ClientInterface;
+use Thruway\Peer\Client;
 
 class ClientTestTransportProvider implements ClientTransportProviderInterface
 {
-    /** @var ClientInterface */
+    /** @var Client */
     private $peer;
     private $loop;
 
-    public function startTransportProvider(ClientInterface $peer, LoopInterface $loop)
+    public function startTransportProvider(Client $peer, LoopInterface $loop)
     {
         $this->peer = $peer;
         $this->loop = $loop;

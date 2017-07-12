@@ -5,11 +5,9 @@ namespace Thruway\Role;
 use React\Promise\CancellablePromiseInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
-use Thruway\AbstractSession;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
 use Thruway\Message\InterruptMessage;
-use Thruway\Session;
 use Thruway\WampErrorException;
 use Thruway\Logging\Logger;
 use Thruway\Message\ErrorMessage;
@@ -69,11 +67,11 @@ class Callee extends AbstractRole
     /**
      * Handle process reveiced message
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\Message $msg
      * @return mixed|void
      */
-    public function onMessage(AbstractSession $session, Message $msg)
+    public function onMessage(ClientSession $session, Message $msg)
     {
         if ($msg instanceof RegisteredMessage):
             $this->processRegistered($msg);

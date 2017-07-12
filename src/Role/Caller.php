@@ -3,7 +3,6 @@
 namespace Thruway\Role;
 
 
-use Thruway\AbstractSession;
 use Thruway\CallResult;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
@@ -13,7 +12,6 @@ use Thruway\Message\CancelMessage;
 use Thruway\Message\ErrorMessage;
 use Thruway\Message\Message;
 use Thruway\Message\ResultMessage;
-use Thruway\Session;
 use React\Promise\Deferred;
 
 /**
@@ -57,11 +55,11 @@ class Caller extends AbstractRole
     /**
      * process message
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\Message $msg
      * @return void
      */
-    public function onMessage(AbstractSession $session, Message $msg)
+    public function onMessage(ClientSession $session, Message $msg)
     {
 
         if ($msg instanceof ResultMessage):

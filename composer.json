@@ -32,5 +32,9 @@
     "require-dev": {
         "phpunit/phpunit": "^5.5.4",
         "thruway/pawl-transport": "dev-master"
+    },
+    "suggest": {
+        "thruway/pawl-transport": "WebSocket transport based on RatchetPHP's Pawl library",
+        "thruway/raw-socket-transport": "Raw socket transport"
     }
 }

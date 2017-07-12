@@ -29,9 +29,8 @@ use React\EventLoop\LoopInterface;
  *
  * @package Thruway\Peer
  */
-class Client implements EventEmitterInterface, ClientInterface
+class Client implements EventEmitterInterface
 {
-
     /**
      * Implements EventEmitterInterface
      *

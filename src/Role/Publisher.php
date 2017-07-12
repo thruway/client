@@ -2,15 +2,12 @@
 
 namespace Thruway\Role;
 
-
-use Thruway\AbstractSession;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
 use Thruway\Message\ErrorMessage;
 use Thruway\Message\Message;
 use Thruway\Message\PublishedMessage;
 use Thruway\Message\PublishMessage;
-use Thruway\Session;
 use React\Promise\Deferred;
 
 /**
@@ -51,11 +48,11 @@ class Publisher extends AbstractRole
     /**
      * handle received message
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\Message $msg
      * @return void
      */
-    public function onMessage(AbstractSession $session, Message $msg)
+    public function onMessage(ClientSession $session, Message $msg)
     {
         if ($msg instanceof PublishedMessage):
             $this->processPublished($msg);

@@ -2,8 +2,7 @@
 
 namespace Thruway\Role;
 
-
-use Thruway\AbstractSession;
+use Thruway\ClientSession;
 use Thruway\Message\Message;
 
 /**
@@ -17,11 +16,11 @@ abstract class AbstractRole
     /**
      * Handle process reveiced message
      *
-     * @param \Thruway\AbstractSession $session
+     * @param \Thruway\ClientSession $session
      * @param \Thruway\Message\Message $msg
      * @return mixed
      */
-    abstract public function onMessage(AbstractSession $session, Message $msg);
+    abstract public function onMessage(ClientSession $session, Message $msg);
 
     /**
      * Handle process message
@@ -38,5 +37,4 @@ abstract class AbstractRole
     {
         return new \stdClass();
     }
-
-} 
+}

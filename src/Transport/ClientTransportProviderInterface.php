@@ -1,19 +1,16 @@
 <?php
 
-
 namespace Thruway\Transport;
 
-
 use React\EventLoop\LoopInterface;
-use Thruway\Peer\ClientInterface;
+use Thruway\Peer\Client;
 
 interface ClientTransportProviderInterface extends TransportProviderInterface {
     /**
      * Start transport provider
      *
-     * @param \Thruway\Peer\ClientInterface $peer
+     * @param \Thruway\Peer\Client $peer
      * @param \React\EventLoop\LoopInterface $loop
      */
-    public function startTransportProvider(ClientInterface $peer, LoopInterface $loop);
-
-} 
+    public function startTransportProvider(Client $peer, LoopInterface $loop);
+}
