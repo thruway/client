@@ -2,7 +2,6 @@
 
 namespace Thruway;
 
-
 use Thruway\Message\AbortMessage;
 use Thruway\Message\Message;
 
@@ -92,7 +91,6 @@ abstract class AbstractSession
     {
         return $this->state;
     }
-
 
     /**
      * Set athentication state (authenticated or not)
@@ -248,5 +246,4 @@ abstract class AbstractSession
     {
         return $this->loop;
     }
-
-} 
+}

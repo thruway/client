@@ -2,7 +2,6 @@
 
 namespace Thruway\Authentication;
 
-
 use Thruway\Common\Utils;
 use Thruway\Logging\Logger;
 use Thruway\Message\AuthenticateMessage;
@@ -13,7 +12,6 @@ use Thruway\Message\ChallengeMessage;
  */
 class ClientWampCraAuthenticator implements ClientAuthenticationInterface
 {
-
     /**
      * @var string|int
      */
@@ -50,25 +48,25 @@ class ClientWampCraAuthenticator implements ClientAuthenticationInterface
      */
     public function getAuthenticateFromChallenge(ChallengeMessage $msg)
     {
-        Logger::info($this, "Got challenge");
-        Logger::debug($this, "Challenge Message: " . json_encode($msg));
+        Logger::info($this, 'Got challenge');
+        Logger::debug($this, 'Challenge Message: ' . json_encode($msg));
 
 
-        if (!in_array($msg->getAuthMethod(), $this->getAuthMethods())) {
-            //throw new \Exception("method isn't in methods");
+        if (!in_array($msg->getAuthMethod(), $this->getAuthMethods(), true)) {
+            //throw new \Exception('method isn't in methods');
             return false;
         }
 
         $details = $msg->getDetails();
         if (!is_object($details)) {
-            Logger::info($this, "No details sent with challenge");
+            Logger::info($this, 'No details sent with challenge');
             return false;
         }
 
         if (isset($details->challenge)) {
             $challenge = $details->challenge;
         } else {
-            Logger::info($this, "No challenge for wampcra?");
+            Logger::info($this, 'No challenge for wampcra?');
             return false;
         }
 
@@ -81,7 +79,7 @@ class ClientWampCraAuthenticator implements ClientAuthenticationInterface
                 if (is_numeric($details->keylen)) {
                     $keyLen = $details->keylen;
                 } else {
-                    Logger::error($this, "keylen is not numeric.");
+                    Logger::error($this, 'keylen is not numeric.');
                 }
             }
             $iterations = 1000;
@@ -89,7 +87,7 @@ class ClientWampCraAuthenticator implements ClientAuthenticationInterface
                 if (is_numeric($details->iterations)) {
                     $iterations = $details->iterations;
                 } else {
-                    Logger::error($this, "iterations is not numeric.");
+                    Logger::error($this, 'iterations is not numeric.');
                 }
             }
 
@@ -100,7 +98,7 @@ class ClientWampCraAuthenticator implements ClientAuthenticationInterface
 
         $authMessage = new AuthenticateMessage($token);
 
-        Logger::debug($this, "returning: " . json_encode($authMessage));
+        Logger::debug($this, 'returning: ' . json_encode($authMessage));
 
         return $authMessage;
     }
@@ -134,5 +132,4 @@ class ClientWampCraAuthenticator implements ClientAuthenticationInterface
     {
         return ['wampcra'];
     }
-
 }

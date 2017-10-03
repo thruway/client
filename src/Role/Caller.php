@@ -2,7 +2,6 @@
 
 namespace Thruway\Role;
 
-
 use Thruway\AbstractSession;
 use Thruway\CallResult;
 use Thruway\ClientSession;
@@ -13,7 +12,6 @@ use Thruway\Message\CancelMessage;
 use Thruway\Message\ErrorMessage;
 use Thruway\Message\Message;
 use Thruway\Message\ResultMessage;
-use Thruway\Session;
 use React\Promise\Deferred;
 
 /**
@@ -23,7 +21,6 @@ use React\Promise\Deferred;
  */
 class Caller extends AbstractRole
 {
-
     /**
      * @var array
      */
@@ -114,7 +111,6 @@ class Caller extends AbstractRole
                 }
                 break;
         }
-
     }
 
     /**
@@ -126,14 +122,13 @@ class Caller extends AbstractRole
      */
     public function handlesMessage(Message $msg)
     {
-
         $handledMsgCodes = [
           Message::MSG_RESULT,
         ];
 
         if (in_array($msg->getMsgCode(), $handledMsgCodes)) {
             return true;
-        } elseif ($msg instanceof ErrorMessage && $msg->getErrorMsgCode() == Message::MSG_CALL) {
+        } elseif ($msg instanceof ErrorMessage && $msg->getErrorMsgCode() === Message::MSG_CALL) {
             return true;
         } else {
             return false;
@@ -160,8 +155,8 @@ class Caller extends AbstractRole
         });
 
         $this->callRequests[$requestId] = [
-          "procedure_name" => $procedureName,
-          "future_result"  => $futureResult
+          'procedure_name' => $procedureName,
+          'future_result'  => $futureResult
         ];
 
         if (is_array($options)) {

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Thruway\Peer;
-
 
 use Thruway\Message\Message;
 use Thruway\Transport\ClientTransportProviderInterface;
@@ -23,14 +21,12 @@ interface ClientInterface extends PeerInterface
      */
     public function onSessionStart($session, $transport);
 
-
     /**
      * Handle open transport
      *
      * @param TransportInterface $transport
      */
     public function onOpen(TransportInterface $transport);
-
 
     /**
      * Handle process message
@@ -41,14 +37,12 @@ interface ClientInterface extends PeerInterface
      */
     public function onMessage(TransportInterface $transport, Message $msg);
 
-
     /**
      * Handle close session
      *
      * @param mixed $reason
      */
     public function onClose($reason);
-
 
     /**
      * Add transport provider
@@ -57,7 +51,6 @@ interface ClientInterface extends PeerInterface
      * @return
      */
     public function addTransportProvider(ClientTransportProviderInterface $transportProvider);
-
 
     /**
      * Start the transport

@@ -11,7 +11,6 @@ use Thruway\Message\ResultMessage;
  */
 class CallResult extends \ArrayObject
 {
-
     /**
      * @var \Thruway\Message\ResultMessage
      */

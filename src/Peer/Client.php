@@ -142,30 +142,29 @@ class Client implements EventEmitterInterface, ClientInterface
         $this->authMethods          = [];
         $this->session              = null;
         $this->clientAuthenticators = [];
-        $this->authId               = "anonymous";
+        $this->authId               = 'anonymous';
 
         $this->reconnectOptions = [
-          "max_retries"         => 15,
-          "initial_retry_delay" => 1.5,
-          "max_retry_delay"     => 300,
-          "retry_delay_growth"  => 1.5,
-          "retry_delay_jitter"  => 0.1 //not implemented
+            'max_retries'         => 15,
+            'initial_retry_delay' => 1.5,
+            'max_retry_delay'     => 300,
+            'retry_delay_growth'  => 1.5,
+            'retry_delay_jitter'  => 0.1 //not implemented
         ];
 
         $this->on('open', [$this, 'onSessionStart']);
 
-        Logger::info($this, "New client created");
+        Logger::info($this, 'New client created');
 
     }
 
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return get_class($this);
     }
-
 
     /**
      * This is meant to be overridden so that the client can do its
@@ -188,7 +187,7 @@ class Client implements EventEmitterInterface, ClientInterface
     public function addTransportProvider(ClientTransportProviderInterface $transportProvider)
     {
         if ($this->transportProvider !== null) {
-            throw new \Exception("You can only have one transport provider for a client");
+            throw new \Exception('You can only have one transport provider for a client');
         }
         $this->transportProvider = $transportProvider;
     }
@@ -208,11 +207,12 @@ class Client implements EventEmitterInterface, ClientInterface
      *
      * @param \Thruway\Authentication\ClientAuthenticationInterface $ca
      */
+
     public function addClientAuthenticator(ClientAuthenticationInterface $ca)
     {
-        array_push($this->clientAuthenticators, $ca);
-        $this->authMethods = array_merge($this->authMethods, $ca->getAuthMethods());
+        $this->clientAuthenticators[] = $ca;
 
+        $this->authMethods = array_merge($this->authMethods, $ca->getAuthMethods());
     }
 
     /**
@@ -261,12 +261,12 @@ class Client implements EventEmitterInterface, ClientInterface
     public function startSession(ClientSession $session)
     {
         $this->addRole(new Callee())
-          ->addRole(new Caller())
-          ->addRole(new Publisher())
-          ->addRole(new Subscriber());
+            ->addRole(new Caller())
+            ->addRole(new Publisher())
+            ->addRole(new Subscriber());
 
-        $details = (object) [
-          "roles" => $this->getRoleInfoObject()
+        $details = (object)[
+            'roles' => $this->getRoleInfoObject()
         ];
 
         $details->authmethods = $this->authMethods;
@@ -282,11 +282,11 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     public function getRoleInfoObject()
     {
-        return (object) [
-          "publisher"  => (object) ["features" => $this->getPublisher()->getFeatures()],
-          "subscriber" => (object) ["features" => $this->getSubscriber()->getFeatures()],
-          "caller"     => (object) ["features" => $this->getCaller()->getFeatures()],
-          "callee"     => (object) ["features" => $this->getCallee()->getFeatures()]
+        return (object)[
+            'publisher'  => (object)['features' => $this->getPublisher()->getFeatures()],
+            'subscriber' => (object)['features' => $this->getSubscriber()->getFeatures()],
+            'caller'     => (object)['features' => $this->getCaller()->getFeatures()],
+            'callee'     => (object)['features' => $this->getCallee()->getFeatures()]
         ];
     }
 
@@ -319,6 +319,7 @@ class Client implements EventEmitterInterface, ClientInterface
      *
      * @param \Thruway\Transport\TransportInterface $transport
      * @param \Thruway\Message\Message $msg
+     * @return mixed|void
      */
     public function onMessage(TransportInterface $transport, Message $msg)
     {
@@ -339,7 +340,6 @@ class Client implements EventEmitterInterface, ClientInterface
         } else:
             $this->processOther($session, $msg);
         endif;
-
     }
 
     /**
@@ -376,7 +376,6 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     public function processChallenge(ClientSession $session, ChallengeMessage $msg)
     {
-
         $authMethod = $msg->getAuthMethod();
 
         // look for authenticator
@@ -479,17 +478,17 @@ class Client implements EventEmitterInterface, ClientInterface
 
         if ($this->retryTimer >= $options['max_retry_delay']) {
             $this->retryTimer = $options['max_retry_delay'];
-        } elseif ($this->retryTimer == 0) {
+        } elseif ($this->retryTimer === 0) {
             $this->retryTimer = $options['initial_retry_delay'];
         } else {
-            $this->retryTimer = $this->retryTimer * $options['retry_delay_growth'];
+            $this->retryTimer *= $options['retry_delay_growth'];
         }
 
         $this->loop->addTimer(
-          $this->retryTimer,
-          function () {
-              $this->transportProvider->startTransportProvider($this, $this->loop);
-          }
+            $this->retryTimer,
+            function () {
+                $this->transportProvider->startTransportProvider($this, $this->loop);
+            }
         );
     }
 
@@ -504,7 +503,6 @@ class Client implements EventEmitterInterface, ClientInterface
         $this->attemptRetry = $attemptRetry;
     }
 
-
     /**
      * Get callee
      *
@@ -515,7 +513,6 @@ class Client implements EventEmitterInterface, ClientInterface
         return $this->callee;
     }
 
-
     /**
      * Get caller
      *
@@ -525,7 +522,6 @@ class Client implements EventEmitterInterface, ClientInterface
     {
         return $this->caller;
     }
-
 
     /**
      * Get publisher
@@ -633,4 +629,3 @@ class Client implements EventEmitterInterface, ClientInterface
         $this->loop = $loop;
     }
 }
-

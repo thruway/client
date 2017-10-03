@@ -2,7 +2,6 @@
 
 namespace Thruway\Role;
 
-
 use Thruway\AbstractSession;
 use Thruway\Message\Message;
 
@@ -13,7 +12,6 @@ use Thruway\Message\Message;
  */
 abstract class AbstractRole
 {
-
     /**
      * Handle process reveiced message
      *
@@ -38,5 +36,4 @@ abstract class AbstractRole
     {
         return new \stdClass();
     }
-
-} 
+}

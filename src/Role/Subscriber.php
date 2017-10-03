@@ -2,7 +2,6 @@
 
 namespace Thruway\Role;
 
-
 use React\Promise\Deferred;
 use React\Promise\Promise;
 use Thruway\AbstractSession;
@@ -23,7 +22,6 @@ use Thruway\Message\UnsubscribedMessage;
  */
 class Subscriber extends AbstractRole
 {
-
     /**
      * @var array
      */
@@ -43,7 +41,8 @@ class Subscriber extends AbstractRole
      *
      * @return \stdClass
      */
-    public function getFeatures() {
+    public function getFeatures()
+    {
         $features = new \stdClass();
 
 //        $features->subscriber_metaevents = true;
@@ -89,7 +88,7 @@ class Subscriber extends AbstractRole
                 // TODO
                 break;
             default:
-                Logger::critical($this, "Unhandled error");
+                Logger::critical($this, 'Unhandled error');
         }
     }
 
@@ -102,7 +101,7 @@ class Subscriber extends AbstractRole
     protected function processSubscribeError(AbstractSession $session, ErrorMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
-            if ($subscription["request_id"] === $msg->getErrorRequestId()) {
+            if ($subscription['request_id'] === $msg->getErrorRequestId()) {
                 // reject the promise
                 $this->subscriptions[$key]['deferred']->reject($msg);
 
@@ -121,7 +120,7 @@ class Subscriber extends AbstractRole
     protected function processSubscribed(ClientSession $session, SubscribedMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
-            if ($subscription["request_id"] === $msg->getRequestId()) {
+            if ($subscription['request_id'] === $msg->getRequestId()) {
                 $this->subscriptions[$key]['subscription_id'] = $msg->getSubscriptionId();
                 $this->subscriptions[$key]['deferred']->resolve($msg);
                 break;
@@ -138,7 +137,7 @@ class Subscriber extends AbstractRole
     protected function processUnsubscribed(ClientSession $session, UnsubscribedMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
-            if (isset($subscription['unsubscribed_request_id']) && $subscription['unsubscribed_request_id'] == $msg->getRequestId()) {
+            if (isset($subscription['unsubscribed_request_id']) && $subscription['unsubscribed_request_id'] === $msg->getRequestId()) {
                 /* @var $deferred \React\Promise\Deferred */
                 $deferred = $subscription['unsubscribed_deferred'];
                 $deferred->resolve();
@@ -159,14 +158,13 @@ class Subscriber extends AbstractRole
     protected function processEvent(ClientSession $session, EventMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
-            if ($subscription["subscription_id"] === $msg->getSubscriptionId()) {
-                call_user_func_array($subscription["callback"],
-                    [$msg->getArguments(), $msg->getArgumentsKw(), $msg->getDetails(), $msg->getPublicationId()]);
+            if ($subscription['subscription_id'] === $msg->getSubscriptionId()) {
+                call_user_func($subscription['callback'],
+                    $msg->getArguments(), $msg->getArgumentsKw(), $msg->getDetails(), $msg->getPublicationId());
                 break;
             }
         }
     }
-
 
     /**
      * Returns true if this role handles this message.
@@ -190,11 +188,7 @@ class Subscriber extends AbstractRole
             $codeToCheck = $msg->getErrorMsgCode();
         }
 
-        if (in_array($codeToCheck, $handledMsgCodes)) {
-            return true;
-        } else {
-            return false;
-        }
+        return in_array($codeToCheck, $handledMsgCodes, true) ? true : false;
     }
 
     /**
@@ -213,19 +207,18 @@ class Subscriber extends AbstractRole
         $deferred  = new Deferred();
 
         $subscription = [
-            "topic_name" => $topicName,
-            "callback"   => $callback,
-            "request_id" => $requestId,
-            "options"    => $options,
-            "deferred"   => $deferred
+            'topic_name' => $topicName,
+            'callback'   => $callback,
+            'request_id' => $requestId,
+            'options'    => $options,
+            'deferred'   => $deferred
         ];
 
-        array_push($this->subscriptions, $subscription);
+        $this->subscriptions[] = $subscription;
 
         $subscribeMsg = new SubscribeMessage($requestId, $options, $topicName);
         $session->sendMessage($subscribeMsg);
 
         return $deferred->promise();
     }
-
 } 

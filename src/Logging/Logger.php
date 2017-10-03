@@ -2,7 +2,6 @@
 
 namespace Thruway\Logging;
 
-
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -37,11 +36,11 @@ class Logger
             $message   = "[{$className} {$pid}] {$message}";
         }
 
-        if (static::$logger == null) {
+        if (static::$logger === null) {
             static::$logger = new ConsoleLogger();
         }
 
-        return static::$logger->log($level, $message, $context);
+        static::$logger->log($level, $message, $context);
     }
 
     /**
@@ -75,7 +74,6 @@ class Logger
      */
     public static function debug($object = null, $message, $context = [])
     {
-
         static::log($object, LogLevel::DEBUG, $message, $context);
     }
 
@@ -87,7 +85,6 @@ class Logger
      */
     public static function emergency($object = null, $message, $context = [])
     {
-
         static::log($object, LogLevel::EMERGENCY, $message, $context);
     }
 
@@ -158,7 +155,7 @@ class Logger
      *
      * @return void
      */
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 }

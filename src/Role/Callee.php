@@ -9,7 +9,6 @@ use Thruway\AbstractSession;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
 use Thruway\Message\InterruptMessage;
-use Thruway\Session;
 use Thruway\WampErrorException;
 use Thruway\Logging\Logger;
 use Thruway\Message\ErrorMessage;
@@ -39,14 +38,12 @@ class Callee extends AbstractRole
      * @var array
      */
     private $invocationCanceller = [];
-
-
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-
         $this->registrations = [];
     }
 
@@ -167,10 +164,10 @@ class Callee extends AbstractRole
     protected function processInvocation(ClientSession $session, InvocationMessage $msg)
     {
         foreach ($this->registrations as $key => $registration) {
-            if (!isset($registration["registration_id"])) {
-                Logger::info($this, "Registration_id not set for ".$registration['procedure_name']);
+            if (!isset($registration['registration_id'])) {
+                Logger::info($this, 'Registration_id not set for '.$registration['procedure_name']);
             } else {
-                if ($registration["registration_id"] === $msg->getRegistrationId()) {
+                if ($registration['registration_id'] === $msg->getRegistrationId()) {
 
                     if ($registration['callback'] === null) {
                         // this is where calls end up if the client has called unregister but
@@ -182,7 +179,7 @@ class Callee extends AbstractRole
                     }
 
                     try {
-                        $results = $registration["callback"]($msg->getArguments(), $msg->getArgumentsKw(), $msg->getDetails());
+                        $results = $registration['callback']($msg->getArguments(), $msg->getArgumentsKw(), $msg->getDetails());
 
                         if ($results instanceof PromiseInterface) {
                             if ($results instanceof CancellablePromiseInterface) {
@@ -305,14 +302,13 @@ class Callee extends AbstractRole
      */
     public function processError(ClientSession $session, ErrorMessage $msg)
     {
-        if ($msg->getErrorMsgCode() == Message::MSG_REGISTER) {
+        if ($msg->getErrorMsgCode() === Message::MSG_REGISTER) {
             $this->handleErrorRegister($session, $msg);
-        } elseif ($msg->getErrorMsgCode() == Message::MSG_UNREGISTER) {
+        } elseif ($msg->getErrorMsgCode() === Message::MSG_UNREGISTER) {
             $this->handleErrorUnregister($session, $msg);
         } else {
-            Logger::error($this, "Unhandled error message: ".json_encode($msg));
+            Logger::error($this, 'Unhandled error message: '.json_encode($msg));
         }
-
     }
 
     /**
@@ -324,7 +320,7 @@ class Callee extends AbstractRole
     public function handleErrorRegister(ClientSession $session, ErrorMessage $msg)
     {
         foreach ($this->registrations as $key => $registration) {
-            if ($registration["request_id"] === $msg->getRequestId()) {
+            if ($registration['request_id'] === $msg->getRequestId()) {
                 /** @var Deferred $deferred */
                 $deferred = $registration['futureResult'];
                 $deferred->reject($msg);
@@ -344,7 +340,7 @@ class Callee extends AbstractRole
     {
         foreach ($this->registrations as $key => $registration) {
             if (isset($registration['unregister_request_id'])) {
-                if ($registration["unregister_request_id"] === $msg->getRequestId()) {
+                if ($registration['unregister_request_id'] === $msg->getRequestId()) {
                     /** @var Deferred $deferred */
                     $deferred = $registration['unregister_deferred'];
                     $deferred->reject($msg);
@@ -367,7 +363,6 @@ class Callee extends AbstractRole
      */
     public function handlesMessage(Message $msg)
     {
-
         $handledMsgCodes = [
             Message::MSG_REGISTERED,
             Message::MSG_UNREGISTERED,
@@ -382,14 +377,13 @@ class Callee extends AbstractRole
             $codeToCheck = $msg->getErrorMsgCode();
         }
 
-        if (in_array($codeToCheck, $handledMsgCodes)) {
+        if (in_array($codeToCheck, $handledMsgCodes, true)) {
             return true;
         } else {
             return false;
         }
     }
-
-
+    
     /**
      * process register
      *
@@ -406,9 +400,9 @@ class Callee extends AbstractRole
         $requestId    = Utils::getUniqueId();
         $options      = isset($options) ? (object) $options : new \stdClass();
         $registration = [
-          "procedure_name" => $procedureName,
-          "callback"       => $callback,
-          "request_id"     => $requestId,
+          'procedure_name' => $procedureName,
+          'callback'       => $callback,
+          'request_id'     => $requestId,
           'options'        => $options,
           'futureResult'   => $futureResult
         ];
@@ -438,7 +432,7 @@ class Callee extends AbstractRole
 
         foreach ($this->registrations as $k => $r) {
             if (isset($r['procedure_name'])) {
-                if ($r['procedure_name'] == $Uri) {
+                if ($r['procedure_name'] === $Uri) {
                     $registration = &$this->registrations[$k];
                     break;
                 }
@@ -446,7 +440,7 @@ class Callee extends AbstractRole
         }
 
         if ($registration === null) {
-            Logger::warning($this, "registration not found: ".$Uri);
+            Logger::warning($this, 'registration not found: '.$Uri);
 
             return false;
         }
@@ -457,10 +451,10 @@ class Callee extends AbstractRole
 
         $futureResult = new Deferred();
 
-        if (!isset($registration["registration_id"])) {
+        if (!isset($registration['registration_id'])) {
             // this would happen if the registration was never acknowledged by the router
             // we should remove the registration and resolve any pending deferreds
-            Logger::error($this, "Registration ID is not set while attempting to unregister ".$Uri);
+            Logger::error($this, 'Registration ID is not set while attempting to unregister '.$Uri);
 
             // reject the pending registration
             $registration['futureResult']->reject();
@@ -505,6 +499,4 @@ class Callee extends AbstractRole
         // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
         return array_keys($keys) === $keys;
     }
-
-
 } 

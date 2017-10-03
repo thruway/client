@@ -2,7 +2,6 @@
 
 namespace Thruway\Role;
 
-
 use Thruway\AbstractSession;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
@@ -10,7 +9,6 @@ use Thruway\Message\ErrorMessage;
 use Thruway\Message\Message;
 use Thruway\Message\PublishedMessage;
 use Thruway\Message\PublishMessage;
-use Thruway\Session;
 use React\Promise\Deferred;
 
 /**
@@ -75,12 +73,11 @@ class Publisher extends AbstractRole
     {
         if (isset($this->publishRequests[$msg->getRequestId()])) {
             /* @var $futureResult Deferred */
-            $futureResult = $this->publishRequests[$msg->getRequestId()]["future_result"];
+            $futureResult = $this->publishRequests[$msg->getRequestId()]['future_result'];
             $futureResult->resolve($msg->getPublicationId());
             unset($this->publishRequests[$msg->getRequestId()]);
         }
     }
-
 
     /**
      * process error
@@ -91,7 +88,7 @@ class Publisher extends AbstractRole
     {
         if (isset($this->publishRequests[$msg->getRequestId()])) {
             /* @var $futureResult Deferred */
-            $futureResult = $this->publishRequests[$msg->getRequestId()]["future_result"];
+            $futureResult = $this->publishRequests[$msg->getRequestId()]['future_result'];
             $futureResult->reject($msg);
             unset($this->publishRequests[$msg->getRequestId()]);
         }
@@ -109,14 +106,13 @@ class Publisher extends AbstractRole
             Message::MSG_PUBLISHED,
         ];
 
-        if (in_array($msg->getMsgCode(), $handledMsgCodes)) {
+        if (in_array($msg->getMsgCode(), $handledMsgCodes, true)) {
             return true;
-        } elseif ($msg instanceof ErrorMessage && $msg->getErrorMsgCode() == Message::MSG_PUBLISH) {
+        } elseif ($msg instanceof ErrorMessage && $msg->getErrorMsgCode() === Message::MSG_PUBLISH) {
             return true;
         } else {
             return false;
         }
-
     }
 
     /**
@@ -147,5 +143,4 @@ class Publisher extends AbstractRole
 
         return isset($futureResult) ? $futureResult->promise() : false;
     }
-
-} 
+}
