@@ -2,6 +2,7 @@
 
 namespace Thruway;
 
+use function React\Promise\Timer\timeout;
 use Thruway\Message\AbortMessage;
 use Thruway\Message\Message;
 
