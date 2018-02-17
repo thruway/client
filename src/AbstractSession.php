@@ -191,7 +191,7 @@ abstract class AbstractSession
      */
     public function ping($timeout = 5)
     {
-        return $this->getTransport()->ping($timeout);
+        return timeout($this->getTransport()->ping(), $timeout, $this->loop);
     }
 
     /**
