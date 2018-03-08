@@ -23,8 +23,8 @@ class Result
      */
     public function __construct($arguments = null, $argumentsKw = null)
     {
-        $this->$arguments   = $arguments;
-        $this->$argumentsKw = $argumentsKw;
+        $this->setArguments($arguments);
+        $this->setArgumentsKw($argumentsKw);
     }
 
     /**
