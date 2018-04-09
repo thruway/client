@@ -76,7 +76,7 @@ class Connection implements EventEmitterInterface
      */
     public function doEvents($timer = 1)
     {
-        $loop = $this->getClient()->getLoop();
+        /*$loop = $this->getClient()->getLoop();
 
         $looping = true;
         $loop->addTimer($timer, function () use (&$looping) {
@@ -86,7 +86,7 @@ class Connection implements EventEmitterInterface
         while ($looping) {
             usleep(1000);
             $loop->tick();
-        }
+        }*/
     }
 
     /**
