@@ -241,8 +241,6 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     public function onOpen(TransportInterface $transport)
     {
-        $this->retryTimer    = 0;
-        $this->retryAttempts = 0;
         $this->transport     = $transport;
         $session             = new ClientSession($transport, $this);
         $this->session       = $session;
