@@ -2,6 +2,7 @@
 
 namespace Thruway\Peer;
 
+use Psr\Log\LoggerInterface;
 use Thruway\Authentication\ClientAuthenticationInterface;
 use Thruway\ClientSession;
 use Thruway\Common\Utils;
@@ -131,9 +132,13 @@ class Client implements EventEmitterInterface, ClientInterface
      * @param string $realm
      * @param \React\EventLoop\LoopInterface $loop
      */
-    public function __construct($realm, LoopInterface $loop = null)
+    public function __construct($realm, LoopInterface $loop = null, LoggerInterface $logger = null)
     {
         Utils::checkPrecision();
+
+        if ($logger) {
+            Logger::set($logger);
+        }
 
         $this->realm                = $realm;
         $this->loop                 = $loop ? $loop : Factory::create();
