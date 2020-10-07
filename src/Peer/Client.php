@@ -260,10 +260,9 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     public function startSession(ClientSession $session)
     {
-        $this->addRole(new Callee())
-            ->addRole(new Caller())
-            ->addRole(new Publisher())
-            ->addRole(new Subscriber());
+        foreach ($this->getDefaultRoles() as $role) {
+            $this->addRole($role);
+        }
 
         $details = (object)[
             'roles' => $this->getRoleInfoObject()
@@ -627,5 +626,18 @@ class Client implements EventEmitterInterface, ClientInterface
     public function setLoop(LoopInterface $loop)
     {
         $this->loop = $loop;
+    }
+
+    /**
+     * @return array|\Thruway\Role\AbstractRole[]
+     */
+    protected function getDefaultRoles()
+    {
+        return [
+            new Callee(),
+            new Caller(),
+            new Publisher(),
+            new Subscriber(),
+        ];
     }
 }
