@@ -22,7 +22,7 @@ class Publisher extends AbstractRole
     /**
      * @var array
      */
-    private $publishRequests;
+    protected $publishRequests;
 
     /**
      * Constructor

@@ -25,7 +25,7 @@ class Subscriber extends AbstractRole
     /**
      * @var array
      */
-    private $subscriptions;
+    protected $subscriptions;
 
     /**
      * Constructor
@@ -221,4 +221,4 @@ class Subscriber extends AbstractRole
 
         return $deferred->promise();
     }
-} 
+}

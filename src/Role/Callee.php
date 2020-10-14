@@ -32,13 +32,13 @@ class Callee extends AbstractRole
     /**
      * @var array
      */
-    private $registrations;
+    protected $registrations;
 
     /**
      * @var array
      */
-    private $invocationCanceller = [];
-    
+    protected $invocationCanceller = [];
+
     /**
      * Constructor
      */
@@ -383,7 +383,7 @@ class Callee extends AbstractRole
             return false;
         }
     }
-    
+
     /**
      * process register
      *
@@ -499,4 +499,4 @@ class Callee extends AbstractRole
         // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
         return array_keys($keys) === $keys;
     }
-} 
+}
