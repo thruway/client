@@ -28,7 +28,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function log($object = null, $level, $message, $context = [])
+    public static function log($object, $level, $message, $context = [])
     {
         if (is_object($object)) {
             $className = get_class($object);
@@ -50,7 +50,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function alert($object = null, $message, $context = [])
+    public static function alert($object, $message, $context = [])
     {
         static::log($object, LogLevel::ALERT, $message, $context);
     }
@@ -61,7 +61,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function critical($object = null, $message, $context = [])
+    public static function critical($object, $message, $context = [])
     {
         static::log($object, LogLevel::CRITICAL, $message, $context);
     }
@@ -72,7 +72,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function debug($object = null, $message, $context = [])
+    public static function debug($object, $message, $context = [])
     {
         static::log($object, LogLevel::DEBUG, $message, $context);
     }
@@ -83,7 +83,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function emergency($object = null, $message, $context = [])
+    public static function emergency($object, $message, $context = [])
     {
         static::log($object, LogLevel::EMERGENCY, $message, $context);
     }
@@ -94,7 +94,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function error($object = null, $message, $context = [])
+    public static function error($object, $message, $context = [])
     {
         static::log($object, LogLevel::ERROR, $message, $context);
     }
@@ -105,7 +105,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function info($object = null, $message, $context = [])
+    public static function info($object, $message, $context = [])
     {
         static::log($object, LogLevel::INFO, $message, $context);
     }
@@ -116,7 +116,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function notice($object = null, $message, $context = [])
+    public static function notice($object, $message, $context = [])
     {
         static::log($object, LogLevel::NOTICE, $message, $context);
     }
@@ -126,7 +126,7 @@ class Logger
      * @param array $context
      * @return null
      */
-    public static function warning($object = null, $message, $context = [])
+    public static function warning($object, $message, $context = [])
     {
         static::log($object, LogLevel::WARNING, $message, $context);
     }
