@@ -328,6 +328,11 @@ class Client implements EventEmitterInterface, ClientInterface
 
         $session = $this->session;
 
+        if($session === null) {
+            Logger::warning($this, "Message discarded, no session: {$msg}");
+            return;
+        }
+
         if ($msg instanceof WelcomeMessage):
             $this->processWelcome($session, $msg);
         elseif ($msg instanceof AbortMessage):
