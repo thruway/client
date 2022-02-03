@@ -4,24 +4,51 @@ namespace Thruway\Logging;
 
 use Psr\Log\AbstractLogger;
 
-/**
- * Class ConsoleLogger
- *
- * @package Thruway
- */
-class ConsoleLogger extends AbstractLogger
-{
+if (\PHP_VERSION_ID >= 80000) {
     /**
-     * Logs with an arbitrary level.
+     * Class ConsoleLogger
      *
-     * @param mixed $level
-     * @param string $message
-     * @param array $context
-     * @return null
+     * @package Thruway
      */
-    public function log($level, $message, array $context = [])
+    class ConsoleLogger extends AbstractLogger
     {
-        $now = date("Y-m-d\TH:i:s") . substr((string)microtime(), 1, 8);
-        echo $now . " " . str_pad($level, 10, " ") . " " . $message . "\n";
+        /**
+         * Logs with an arbitrary level.
+         *
+         * @param mixed $level
+         * @param string $message
+         * @param array $context
+         * @return null
+         */
+
+        public function log($level, string|\Stringable $message, array $context = []): void
+        {
+            $now = date("Y-m-d\TH:i:s") . substr((string)microtime(), 1, 8);
+            echo $now . " " . str_pad($level, 10, " ") . " " . $message . "\n";
+        }
+    }
+} else {
+
+    /**
+     * Class ConsoleLogger
+     *
+     * @package Thruway
+     */
+    class ConsoleLogger extends AbstractLogger
+    {
+        /**
+         * Logs with an arbitrary level.
+         *
+         * @param mixed $level
+         * @param string $message
+         * @param array $context
+         * @return null
+         */
+
+        public function log($level, $message, array $context = [])
+        {
+            $now = date("Y-m-d\TH:i:s") . substr((string)microtime(), 1, 8);
+            echo $now . " " . str_pad($level, 10, " ") . " " . $message . "\n";
+        }
     }
 }
