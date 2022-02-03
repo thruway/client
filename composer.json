@@ -31,7 +31,7 @@
         "react/promise-timer": "^1.2.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.5.4",
+        "phpunit/phpunit": "^8.5",
         "thruway/pawl-transport": "dev-master"
     }
 }

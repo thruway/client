@@ -2,20 +2,20 @@
 
 namespace Thruway\Peer;
 
+use PHPUnit\Framework\TestCase;
 use React\EventLoop\Factory;
 use Thruway\Transport\ClientTestTransportProvider;
 
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage You must add exactly one transport provider prior to starting
-     */
     public function testClientMustHaveTransportProvider()
     {
         $loop = Factory::create();
 
         $client = new Client('some.realm', $loop);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('You must add exactly one transport provider prior to starting');
 
         $client->start();
     }
@@ -25,5 +25,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client('some.realm', Factory::create());
 
         $client->addTransportProvider(new ClientTestTransportProvider());
+
+        $this->assertTrue(true, "No error occured.");
     }
 }
