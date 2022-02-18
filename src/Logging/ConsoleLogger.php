@@ -19,7 +19,7 @@ class ConsoleLogger extends AbstractLogger
      * @param array $context
      * @return null
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []) : void
     {
         $now = date("Y-m-d\TH:i:s") . substr((string)microtime(), 1, 8);
         echo $now . " " . str_pad($level, 10, " ") . " " . $message . "\n";
