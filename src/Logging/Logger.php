@@ -15,20 +15,21 @@ class Logger
 
     /**
      * @param LoggerInterface $logger
+     * @return void
      */
-    public static function set(LoggerInterface $logger)
+    public static function set(LoggerInterface $logger): void
     {
         static::$logger = $logger;
     }
 
     /**
-     * @param null $object
-     * @param $level
-     * @param $message
+     * @param null|object $object
+     * @param mixed $level
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function log($object, $level, $message, $context = [])
+    public static function log($object, $level, $message, array $context = []): void
     {
         if (is_object($object)) {
             $className = get_class($object);
@@ -44,96 +45,96 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function alert($object, $message, $context = [])
+    public static function alert($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::ALERT, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function critical($object, $message, $context = [])
+    public static function critical($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::CRITICAL, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function debug($object, $message, $context = [])
+    public static function debug($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::DEBUG, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function emergency($object, $message, $context = [])
+    public static function emergency($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::EMERGENCY, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function error($object, $message, $context = [])
+    public static function error($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::ERROR, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function info($object, $message, $context = [])
+    public static function info($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::INFO, $message, $context);
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function notice($object, $message, $context = [])
+    public static function notice($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::NOTICE, $message, $context);
     }
 
     /**
-     * @param $message
+     * @param null|object $object
+     * @param mixed $message
      * @param array $context
-     * @return null
+     * @return void
      */
-    public static function warning($object, $message, $context = [])
+    public static function warning($object, $message, array $context = []): void
     {
         static::log($object, LogLevel::WARNING, $message, $context);
     }
 
     /**
      * Protected constructor to prevent creating a new instance of the
-     * *Singleton* via the `new` operator from outside of this class.
+     * *Singleton* via the `new` operator from outside this class.
      */
     protected function __construct()
     {
