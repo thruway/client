@@ -17,7 +17,7 @@ class ConsoleLogger extends AbstractLogger
      * @param mixed $level
      * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public function log($level, $message, array $context = []) : void
     {
