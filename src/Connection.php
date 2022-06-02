@@ -3,6 +3,7 @@
 namespace Thruway;
 
 use React\EventLoop\LoopInterface;
+use React\Socket\ConnectorInterface;
 use Thruway\Message\AuthenticateMessage;
 use Thruway\Message\ChallengeMessage;
 use Thruway\Peer\Client;
@@ -46,12 +47,12 @@ class Connection implements EventEmitterInterface
      * @param \React\EventLoop\LoopInterface $loop
      * @throws \Exception
      */
-    public function __construct(Array $options, LoopInterface $loop = null)
+    public function __construct(Array $options, LoopInterface $loop = null, ConnectorInterface $connector = null)
     {
         $this->options = $options;
         $this->client  = new Client($options['realm'], $loop);
         $url           = isset($options['url']) ? $options['url'] : null;
-        $pawlTransport = new PawlTransportProvider($url);
+        $pawlTransport = new PawlTransportProvider($url, $connector);
 
         $this->client->addTransportProvider($pawlTransport);
         $this->client->setReconnectOptions($options);
