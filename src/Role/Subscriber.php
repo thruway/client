@@ -158,7 +158,7 @@ class Subscriber extends AbstractRole
     protected function processEvent(ClientSession $session, EventMessage $msg)
     {
         foreach ($this->subscriptions as $key => $subscription) {
-            if ($subscription['subscription_id'] === $msg->getSubscriptionId()) {
+            if (isset($subscription['subscription_id']) && $subscription['subscription_id'] === $msg->getSubscriptionId()) {
                 call_user_func($subscription['callback'],
                     $msg->getArguments(), $msg->getArgumentsKw(), $msg->getDetails(), $msg->getPublicationId());
                 break;
