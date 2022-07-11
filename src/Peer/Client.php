@@ -124,6 +124,11 @@ class Client implements EventEmitterInterface, ClientInterface
      */
     private $attemptRetry = true;
 
+    /**
+     * @var \stdClass|null
+     */
+    private $authextra;
+
 
     /**
      * Constructor
@@ -143,6 +148,7 @@ class Client implements EventEmitterInterface, ClientInterface
         $this->session              = null;
         $this->clientAuthenticators = [];
         $this->authId               = 'anonymous';
+        $this->authextra            = null;
 
         $this->reconnectOptions = [
             'max_retries'         => 15,
@@ -271,6 +277,9 @@ class Client implements EventEmitterInterface, ClientInterface
 
         $details->authmethods = $this->authMethods;
         $details->authid      = $this->authId;
+        if ($this->authextra !== null) {
+            $details->authextra = $this->authextra;
+        }
 
         $session->setRealm($this->realm);
 
@@ -606,6 +615,22 @@ class Client implements EventEmitterInterface, ClientInterface
     public function setAuthMethods($authMethods)
     {
         $this->authMethods = $authMethods;
+    }
+
+    /**
+     * @return \stdClass|null
+     */
+    public function getAuthextra()
+    {
+        return $this->authextra;
+    }
+
+    /**
+     * @param \stdClass|null $authextra
+     */
+    public function setAuthextra($authextra)
+    {
+        $this->authextra = $authextra === null ? null : (object)$authextra;
     }
 
     /**
