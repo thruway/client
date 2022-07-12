@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": ">7.1",
+        "php": ">=7.1",
         "voryx/thruway-common": "^1.0",
         "react/event-loop": "^1.0 || ^0.5 || ^0.4.3",
         "evenement/evenement": "^3.0 || ^2.0",
