@@ -61,6 +61,10 @@ class Connection implements EventEmitterInterface
         if (isset($options['authid'])) {
             $this->client->setAuthId($options['authid']);
         }
+        //Set Authextra
+        if (isset($options['authextra'])) {
+            $this->client->setAuthextra($options['authextra']);
+        }
 
         //Register Handlers
         $this->handleOnChallenge();
@@ -167,8 +171,12 @@ class Connection implements EventEmitterInterface
             $this->client->setAuthMethods($options['authmethods']);
 
             $this->client->on('challenge', function (ClientSession $session, ChallengeMessage $msg) use ($options) {
+                $extra = null;
                 $token = call_user_func($options['onChallenge'], $session, $msg->getAuthMethod(), $msg);
-                $session->sendMessage(new AuthenticateMessage($token));
+                if (is_array($token) && count($token) >= 2) {
+                    [$token, $extra] = $token;
+                }
+                $session->sendMessage(new AuthenticateMessage($token, $extra));
             });
         }
     }
