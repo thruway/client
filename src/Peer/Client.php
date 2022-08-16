@@ -451,8 +451,8 @@ class Client implements EventEmitterInterface, ClientInterface
             $this->onSessionEnd($this->session);
             $this->session->onClose();
             $this->session = null;
-            $this->emit('close', [$reason]);
         }
+        $this->emit('close', [$reason]);
 
         $this->roles      = [];
         $this->callee     = null;
