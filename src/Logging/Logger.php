@@ -22,11 +22,11 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $level
-     * @param $message
+     * @param object|null $object
+     * @param string $level
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function log($object, $level, $message, $context = [])
     {
@@ -44,11 +44,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function alert($object, $message, $context = [])
     {
@@ -56,10 +55,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function critical($object, $message, $context = [])
     {
@@ -67,10 +66,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function debug($object, $message, $context = [])
     {
@@ -78,10 +77,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function emergency($object, $message, $context = [])
     {
@@ -89,10 +88,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function error($object, $message, $context = [])
     {
@@ -100,10 +99,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function info($object, $message, $context = [])
     {
@@ -111,10 +110,10 @@ class Logger
     }
 
     /**
-     * @param null $object
-     * @param $message
+     * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function notice($object, $message, $context = [])
     {
@@ -122,9 +121,10 @@ class Logger
     }
 
     /**
-     * @param $message
+	 * @param object|null $object
+     * @param string $message
      * @param array $context
-     * @return null
+     * @return void
      */
     public static function warning($object, $message, $context = [])
     {
